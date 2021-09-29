@@ -8,7 +8,7 @@ import (
 )
 
 func doSomething() {
-	for {
+	for i := 0; i < 10000; i++ {
 		rand.Intn(1000000)
 	}
 }
