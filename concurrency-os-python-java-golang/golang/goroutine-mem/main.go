@@ -1,32 +1,16 @@
 package main
 
 import (
-	"io"
+	"math/rand"
 	"os"
 	"runtime/trace"
-	"sync"
+	"time"
 )
 
-var wg sync.WaitGroup
-
-func readBigFile() {
-	fi, err := os.Open("bigfile")
-	if err != nil {
-		panic(err)
-	}
-	defer fi.Close()
-
-	buf := make([]byte, 1024)
+func doSomething() {
 	for {
-		n, err := fi.Read(buf)
-		if err != nil && err != io.EOF {
-			panic(err)
-		}
-		if 0 == n {
-			break
-		}
+		rand.Intn(1000000)
 	}
-	wg.Done()
 }
 
 func main() {
@@ -35,10 +19,10 @@ func main() {
 	_ = trace.Start(f)
 	defer trace.Stop()
 
-	for i := 0; i < 10; i++ {
-		wg.Add(1)
-		go readBigFile()
+	for i := 0; i < 10000; i++ {
+		go doSomething()
 	}
 
-	wg.Wait()
+	time.Sleep(10 * time.Minute)
+
 }
