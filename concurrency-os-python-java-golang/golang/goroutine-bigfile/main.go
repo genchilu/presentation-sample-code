@@ -3,8 +3,11 @@ package main
 import (
 	"io"
 	"os"
-	"time"
+	"runtime/trace"
+	"sync"
 )
+
+var wg sync.WaitGroup
 
 func readBigFile() {
 	fi, err := os.Open("bigfile")
@@ -23,12 +26,19 @@ func readBigFile() {
 			break
 		}
 	}
+
+	wg.Done()
 }
 
 func main() {
+	f, _ := os.Create("trace.out")
+	defer f.Close()
+	_ = trace.Start(f)
+	defer trace.Stop()
 	for i := 0; i < 2000; i++ {
+		wg.Add(1)
 		go readBigFile()
 	}
 
-	time.Sleep(10 * time.Minute)
+	wg.Done()
 }
