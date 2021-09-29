@@ -1,8 +1,6 @@
 package main
 
 import (
-	"os"
-	"runtime/trace"
 	"time"
 )
 
@@ -11,10 +9,6 @@ func doSomething() {
 }
 
 func main() {
-	f, _ := os.Create("trace.out")
-	defer f.Close()
-	_ = trace.Start(f)
-	defer trace.Stop()
 
 	for i := 0; i < 10000; i++ {
 		go doSomething()
