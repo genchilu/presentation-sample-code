@@ -2,6 +2,7 @@ package main
 
 import (
 	"io"
+	"math/rand"
 	"os"
 	"runtime/trace"
 	"sync"
@@ -26,7 +27,12 @@ func readBigFile() {
 			break
 		}
 	}
+}
 
+func doSomething() {
+	for i := 0; i < 10; i++ {
+		rand.Intn(1000000)
+	}
 	wg.Done()
 }
 
@@ -35,10 +41,11 @@ func main() {
 	defer f.Close()
 	_ = trace.Start(f)
 	defer trace.Stop()
-	for i := 0; i < 2000; i++ {
+
+	for i := 0; i < 10; i++ {
 		wg.Add(1)
-		go readBigFile()
+		go doSomething()
 	}
 
-	wg.Done()
+	wg.Wait()
 }
