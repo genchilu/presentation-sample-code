@@ -1,16 +1,13 @@
 package main
 
 import (
-	"math/rand"
 	"os"
 	"runtime/trace"
 	"time"
 )
 
 func doSomething() {
-	for {
-		rand.Intn(1000000)
-	}
+	time.Sleep(100000000)
 }
 
 func main() {

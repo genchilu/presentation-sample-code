@@ -1,18 +1,16 @@
 package main
 
 import (
-	"math/rand"
 	"os"
 	"runtime/trace"
 	"sync"
+	"time"
 )
 
 var wg sync.WaitGroup
 
 func doSomething() {
-	for i := 0; i < 10000; i++ {
-		rand.Intn(1000000)
-	}
+	time.Sleep(100000000)
 	wg.Done()
 }
 
